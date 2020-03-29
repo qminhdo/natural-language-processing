@@ -1,0 +1,19 @@
+I	2
+am	2
+Sam	2
+STOP	2
+* I	1
+I am	2
+am Sam	1
+Sam STOP	1
+* Sam	1
+Sam I	1
+am STOP	1
+* * I	1
+* I am	1
+I am Sam	1
+am Sam STOP	1
+* * Sam	1
+* Sam I	1
+Sam I am	1
+I am STOP	1

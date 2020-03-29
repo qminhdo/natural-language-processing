@@ -1,0 +1,12 @@
+I	1
+am	1
+Sam	1
+STOP	1
+* I	1
+I am	1
+am Sam	1
+Sam STOP	1
+* * I	1
+* I am	1
+I am Sam	1
+am Sam STOP	1
