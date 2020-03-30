@@ -7,30 +7,6 @@ from collections import defaultdict
 from collections import Counter
 
 # python n-trigrams.py <input-file> <model-file>
-"""
-Given a sentence “I am Sam. Sam I am”
-The <model> should look like this:
-I 2
-am 2
-Sam 2
-STOP 2
-I am 2
-am Sam 1
-Sam I 1
-Sam STOP 1
-* Sam 1
-* I 1
-am STOP 1
-* * I 1
-* I am 1
-I am Sam 1
-am Sam STOP 1
-* * Sam 1
-* Sam I 1
-Sam I am 1
-I am STOP 1
-"""
-
 
 class NTrigram:
     def __init__(self, input_filename, model_filename):

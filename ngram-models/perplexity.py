@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-# # -*- coding: utf-8 -*-
+
 """ ngram model homework """
 __author__ = "Quang Minh Do"
 
 import sys, re
 import math
-
+import codecs
 s_test_model = __import__("s-test-model")
 
 class Perplexity:
@@ -42,7 +42,7 @@ class Perplexity:
 
         for prob in probs:
             if (prob == 0.0):
-                prob = 1e-10
+                prob = 1e-5
             log_probs_total += math.log(prob, 2)
 
         return log_probs_total
@@ -61,7 +61,10 @@ class Perplexity:
 
     def read_file(self, filename):
         try:
-            file = open(filename, "r")
+
+
+            file = codecs.open(filename , encoding="Latin-1", errors="replace")
+            # file = open(filename, mode="r", encoding="utf-8",errors="replace")
             return file
         except:
             print("File not found")
@@ -72,8 +75,9 @@ class Perplexity:
 ######################
 # Production
 if __name__ == "__main__":
-    model_filename = sys.argv[1]
-    sentences_filename = sys.argv[2]
-
+    # model_filename = sys.argv[1]
+    # sentences_filename = sys.argv[2]
+    model_filename = "text/Othello.model"
+    sentences_filename = "text/utf8"
     p = Perplexity(model_filename, sentences_filename)
     print("Perpexity:", p.compute_perplexity())

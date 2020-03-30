@@ -177,8 +177,8 @@ class TestSTestModel:
 ######################
 # Test
 
-t = TestSTestModel()
-t.run_all_tests()
+# t = TestSTestModel()
+# t.run_all_tests()
 
 ######################
 # Production
