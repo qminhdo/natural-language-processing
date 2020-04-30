@@ -62,9 +62,9 @@ class AnswerProcessor:
 
     def build_list(self, text, deliminator):
         sents_list = text.split(deliminator)
+        sents_list = [sent.strip().capitalize() for sent in sents_list if sent.strip() != ""]
         sents_list = set(sents_list)
         sents_list = list(sents_list)
-        sents_list = [sent.strip().capitalize() for sent in sents_list if sent.strip() != ""]
         text = "\n\t- ".join(sents_list)
         return text
 

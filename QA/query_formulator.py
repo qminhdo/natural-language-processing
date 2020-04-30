@@ -47,6 +47,7 @@ class QueryFormulator:
 
         if (len(queries) == 0):
             focus = self.q_classifer.matched_groups['focus'].split()
+            focus = [f for f in focus if f not in set(stopwords.words('english'))]
             queries = focus
 
         return queries
@@ -98,20 +99,21 @@ if __name__ == "__main__":
     from question_classifier import QuestionClassifier
 
     questions = [
-        "what are the treatment for hay fever",
-        "treatment for hay fever",
-        "what are the symptoms of hay fever",
-        "what is hay fever",
-        "what cause depression",
-        "how many times do i take aspirin in a day",
-        "where does acne occur most",
-        "where do i go to take vaccine for hay fever",
-        "why do i have hay fever",
-        "who do i contact if i have hay fever",
-        "is aspirin lethal",
-        "Can ADHD cause depression",
-        "what do i do if i have fever",
-        "What happens during a diagnosis of adult ADHD?"
+        "Who do I contact if I have coronavirus?"
+        # "what are the treatment for hay fever",
+        # "treatment for hay fever",
+        # "what are the symptoms of hay fever",
+        # "what is hay fever",
+        # "what cause depression",
+        # "how many times do i take aspirin in a day",
+        # "where does acne occur most",
+        # "where do i go to take vaccine for hay fever",
+        # "why do i have hay fever",
+        # "who do i contact if i have hay fever",
+        # "is aspirin lethal",
+        # "Can ADHD cause depression",
+        # "what do i do if i have fever",
+        # "What happens during a diagnosis of adult ADHD?"
     ]
 
     for q_ in questions:

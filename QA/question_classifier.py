@@ -157,7 +157,7 @@ if __name__ == "__main__":
     Run this file to see details as described below
     """
     questions = [
-        "What causes kidney stones?"
+        "Who do I contact if I have coronavirus?"
     ]
 
     for q_ in questions:
