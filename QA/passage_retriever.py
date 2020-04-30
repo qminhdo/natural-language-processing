@@ -16,6 +16,7 @@ q_words = ["who", "what", "where", "when" "why",
 quantifiers = ["few", "little", "much", "many"]
 irrelevant_loc_words = ["north", "east", "west", "south", "top", "bottom", "up", "down"]
 
+
 class PassageRetriever:
     """
     Return candidate passages along with their score
@@ -76,31 +77,31 @@ class PassageRetriever:
                 matches += content + " "
 
         if (self.q_classifer.a_type == "DEFINITION"):
-            phrase = "definition {}".format(matches)
+            phrase = "{}".format(matches)
 
         elif self.q_classifer.a_type == "SYMPTOM":
-            phrase = "symptom sign issues {}".format(matches)
+            phrase = "common symptom sign issues include : {}".format(matches)
 
         elif self.q_classifer.a_type == "TREATMENT":
-            phrase = "treatment cure care heal medicine help {}".format(matches)
+            phrase = "treatment cure care heal medicine include : {}".format(matches)
 
         elif self.q_classifer.a_type == "CAUSES":
-            phrase = "Causes {}".format(matches)
+            phrase = "main causes form types include factor trigger : {}".format(matches)
 
         elif self.q_classifer.a_type == "FREQUENCY":
-            phrase = "time {}".format(matches)
+            phrase = "time day twice daily {}".format(matches)
 
         elif self.q_classifer.a_type == "LOCATION":
-            phrase = "location {}".format(matches)
+            phrase = "{}".format(matches)
 
         elif self.q_classifer.a_type == "TIME":
-            phrase = "frequency {}".format(matches)
+            phrase = "often {}".format(matches)
 
         elif self.q_classifer.a_type == "DESCRIPTION":
-            phrase = "describe type {}".format(matches)
+            phrase = "{}".format(matches)
 
         elif self.q_classifer.a_type == "PERSON":
-            phrase = "contact approach see visit help doctor nurse{}".format(matches)
+            phrase = "contact approach visit doctor nurse{}".format(matches)
 
         elif self.q_classifer.a_type == "BINARY":
             phrase = "{}".format(matches)
@@ -189,10 +190,12 @@ class PassageRetriever:
         for k, raw_passage in enumerate(passages[1:], start=1):
             total_score = 0
             passage_cleaned = self.clean_passage(raw_passage)
+
             # Do not use passages that are question
+
             is_question = self.check_if_question(passage_cleaned)
             if is_question:
-                pass
+                continue
             else:
                 similarity_score = cosine_similarity(matrix[0], matrix[k])
 
@@ -200,7 +203,7 @@ class PassageRetriever:
                     h1 = self.cal_h1(passage_cleaned)
                     h2 = self.cal_h2(passage_cleaned)
 
-                    total_score = (similarity_score * 0.1) + (h1 * 0.5) + (h2 * 0.4)
+                    total_score = (similarity_score * 0.3) + (h1 * 0.5) + (h2 * 0.2)
                     passages_scores.update({passage_cleaned: total_score})
         return passages_scores
 
@@ -239,14 +242,14 @@ class PassageRetriever:
 
         elif self.q_classifer.a_type == "SYMPTOM":
             focus = self.q_classifer.matched_groups.get('focus')
-            pattern = '(symptom[s]?|sign[s]?|issue[s]?)+'
+            pattern = '(symptom[s]?|sign[s]?|issue[s]?)+.*:.*'
 
         elif self.q_classifer.a_type == "TREATMENT":
             focus = self.q_classifer.matched_groups.get('focus')
-            pattern = '(treatment[s]?|prevention|drug|medication[s]?|medicine)+'
+            pattern = '(treatment[s]?|prevention|drug|medication[s]?|medicine)+.*:.*'
 
         elif self.q_classifer.a_type == "CAUSES":
-            pattern = "(cause[s]?)"
+            pattern = "(cause[s]?|type[s]?|factor[s]?|trigger).*:?.*"
 
         elif self.q_classifer.a_type == "FREQUENCY":
             pattern = "(time[s]?|twice|once|daily)"
@@ -272,9 +275,9 @@ class PassageRetriever:
 
     def check_if_question(self, passage):
         """
-        convert passages into tokens
-        check if contain question words
-        return True if doesn't
+        convert passage into tokens
+        check if contain any question words
+        return True if is
 
         :return: boolean
         """
@@ -290,7 +293,7 @@ class PassageRetriever:
 
     def clean_passage(self, raw_passage):
         stop_words = ["."]
-        raw_passage = re.sub("\n", ".", raw_passage.lower())
+        raw_passage = re.sub("\n", " ", raw_passage.lower())
 
         tokens = [token for i, token in enumerate(word_tokenize(raw_passage.lower()))
                   if token not in stop_words]
@@ -298,39 +301,11 @@ class PassageRetriever:
 
     def build_matrix(self, passages):
         # Use TFIDF
-        # the answer will be the first one
+        # the AP will be the first index
         tfidf_vectorizer = TfidfVectorizer()
         matrix = tfidf_vectorizer.fit_transform(passages)
 
         return matrix
-
-    def _pre_process_doc(self, list_docs):
-        """
-        Experiement pre-processor
-        :param list_docs:
-        :return:
-        """
-        regex_newline = re.compile(r'(\\n)+')
-        regex_references = re.compile(r'== References(.)+')
-        regex_apostrophe = re.compile(r"(\\')")
-        regex_or = re.compile(r'(?<=[A-Za-z.]\s)+/(?=\s+[A-Za-z])')
-        regex_sections = re.compile(r'(=+[a-zA-Z0-9\s]+=+([a-zA-Z0-9\s]+=+)*)')
-        regex_whitespace = re.compile(r"(\s)+")
-
-        for doc in list_docs:
-            snip = list_docs[doc]
-            snip = regex_newline.sub(" ", snip)
-            snip = regex_references.sub("", snip)
-            snip = regex_apostrophe.sub("'", snip)
-            snip = regex_or.sub("or", snip)
-            snip = regex_sections.sub("", snip)
-            snip = regex_whitespace.sub(" ", snip)
-
-            list_docs[doc] = snip
-
-        with open(os.path.join(self.dirname, 'know_corp.txt'), 'w') as fp:
-            for op_doc in list_docs:
-                fp.write(str(op_doc) + "\n")
 
 
 if __name__ == "__main__":
@@ -342,21 +317,10 @@ if __name__ == "__main__":
     from query_formulator import QueryFormulator
 
     questions = [
-        "What is symptom of coronavirus?"
-        # "who do i contact if i have hay fever",
-        # "how many times do i take aspirin in a day",
-        # "what is acne"
-        # "what are the treatment for hay fever",
-        # "treatment for hay fever",
-        # "what are the symptoms of hay fever",
-        # "what cause depression",
-        # "where does acne occur most",
-        # "where do i go to take xray",
-        # "why do i have hay fever",
-        # "is aspirin lethal"
-        # "Can ADHD cause depression",
-        # "what do i do if i have fever",
-        # "What happens during a diagnosis of adult ADHD?"
+        # "How many times do I have to take aspirin in a day?",
+        "What causes acne?"
+        # Where does acne occur most?
+
     ]
 
     for q_ in questions:

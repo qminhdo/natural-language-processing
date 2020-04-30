@@ -71,3 +71,32 @@ def read_obj(filename, rp):
     except IOError as e:
         print("File IO Error :: Cannot open " + filename + "\n" + str(e))
         return False
+
+
+    def _pre_process_doc(self, list_docs):
+        """
+        Experiement pre-processor
+        :param list_docs:
+        :return:
+        """
+        regex_newline = re.compile(r'(\\n)+')
+        regex_references = re.compile(r'== References(.)+')
+        regex_apostrophe = re.compile(r"(\\')")
+        regex_or = re.compile(r'(?<=[A-Za-z.]\s)+/(?=\s+[A-Za-z])')
+        regex_sections = re.compile(r'(=+[a-zA-Z0-9\s]+=+([a-zA-Z0-9\s]+=+)*)')
+        regex_whitespace = re.compile(r"(\s)+")
+
+        for doc in list_docs:
+            snip = list_docs[doc]
+            snip = regex_newline.sub(" ", snip)
+            snip = regex_references.sub("", snip)
+            snip = regex_apostrophe.sub("'", snip)
+            snip = regex_or.sub("or", snip)
+            snip = regex_sections.sub("", snip)
+            snip = regex_whitespace.sub(" ", snip)
+
+            list_docs[doc] = snip
+
+        with open(os.path.join(self.dirname, 'know_corp.txt'), 'w') as fp:
+            for op_doc in list_docs:
+                fp.write(str(op_doc) + "\n")

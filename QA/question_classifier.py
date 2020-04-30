@@ -128,14 +128,14 @@ class QuestionClassifier:
         a_types_reg = {
             "TREATMENT": 'what\s?(?P<verb>is|are)?.*(treatment[s]?)\s(of|for)?\s(?P<focus>\w+( \w+)?)(?P<other>.*)',
             "SYMPTOM": 'what\s?(?P<verb>is|are)?.*(symptom[s]?).*of\s(?P<focus>\w+( \w+)?)(?P<other>.*)',
-            "DEFINITION": 'what\s(?P<verb>is|are)\s(?P<focus>\w+( \w+)?)\s(?P<other>.*)',
+            "DEFINITION": 'what\s(?P<verb>is|are)\s(?P<focus>\w+( \w+)?)\s?(?P<other>.*)?',
             "CAUSES": 'what\s?(?P<verb>cause[s]?)\s(?P<focus>\w+( \w+)?)(?P<other>.*)',
             "FREQUENCY": 'how\s(?P<frequency>long|many|much|high|low)\s(?P<focus>.*)',
             "TIME": 'when\s?(?P<verb>do|does|can|could|should|is|are)?\s?(?P<pronoun>i|you|we|they|he|she|it)?\s?(?P<focus>.*)',
             "LOCATION": 'where\s?(do|does|can|could|should|is|are)?\s?(?P<focus>.*)',
             "DESCRIPTION": 'why\s?(do|does|can|could|should|is|are)?\s?(?P<pronoun>i|you|we|they|he|she|it)?\s?(?P<focus>.*)',
             "PERSON": 'who\s?(do|does|can|could|should|is|are)?\s?(?P<pronoun>i|you|we|they|he|she|it)?\s?(?P<focus>.*)',
-            "BINARY": '(do|does|did|are|is|was|were|have|has|can|will|should|could)\s(?P<pronoun>i|you|we|they|he|she|it)?\s?(?P<focus>.*)',
+            "BINARY": '^(do|does|did|are|is|was|were|have|has|can|will|should|could)\s(?P<pronoun>i|you|we|they|he|she|it)?\s?(?P<focus>.*)',
             "OTHER": '(?P<focus>.*)'
         }
 
@@ -157,21 +157,7 @@ if __name__ == "__main__":
     Run this file to see details as described below
     """
     questions = [
-        "What are the symptoms of coronavirus?"
-        # "what are the treatment for hay fever",
-        # "treatment for hay fever",
-        # "what are the symptoms of hay fever",
-        # "what is hay fever",
-        # "what cause depression",
-        # "how many times do i take aspirin in a day",
-        # "where does acne occur most",
-        # "where do i go to take xray",
-        # "why do i have hay fever",
-        # "who do i contact if i have hay fever",
-        # "is aspirin lethal",
-        # "Can ADHD cause depression",
-        # "what do i do if i have fever",
-        # "What happens during a diagnosis of adult ADHD?"
+        "What causes kidney stones?"
     ]
 
     for q_ in questions:

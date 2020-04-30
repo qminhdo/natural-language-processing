@@ -37,8 +37,13 @@ class AnswerProcessor:
 
         for ps_ in ps:
             ans = ps_[0].capitalize()
-            ans = re.sub('\.', ' ', ans)
-            answer += ans + ' . '
+            ans = re.sub(r'\.', ' ', ans)
+            ans = re.sub(r',$', '', ans)
+            answer += ans + '.\n\n'
+
+
+        # format the answer such that for there will be a list after ":"
+
 
         return answer
 
