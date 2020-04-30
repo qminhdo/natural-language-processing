@@ -18,14 +18,17 @@ def main():
             print("\n============================")
             print("Answering question: ", question, end="")
             print("processing ...")
-            q_classifier = QuestionClassifier(question)
-            queries = QueryFormulator(q_classifier).queries
-            passages_scores = PassageRetriever(q_classifier, queries).candidate_passages
-            best_answer = AnswerProcessor(q_classifier, passages_scores).best_answer
-            print("Answer: ")
-            print(best_answer)
+            try:
+                q_classifier = QuestionClassifier(question)
+                queries = QueryFormulator(q_classifier).queries
+                passages_scores = PassageRetriever(q_classifier, queries).candidate_passages
+                best_answer = AnswerProcessor(q_classifier, passages_scores).best_answer
+                print("Answer: ")
+                print(best_answer)
 
-                # print("Some thing went wrong")
+            except:
+                print("Some thing went wrong")
+
 
 if (__name__ == "__main__"):
     main()

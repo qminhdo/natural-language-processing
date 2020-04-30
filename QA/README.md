@@ -17,9 +17,10 @@ python3.7 -m pip install nltk==3.5
 python3.7 -m pip install -U scikit-learn==0.22.2
 
 # install zip and unzip
-sudo apt install zip unzip
+sudo apt-get install zip unzip
 
 # unzip the data folder 
+sudo unzip data.zip
 
 ```
 External Packages used in the QA:
