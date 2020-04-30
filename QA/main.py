@@ -12,7 +12,6 @@ nltk.download('wordnet')
 nltk.download('maxent_ne_chunker')
 
 def main():
-
     with open('TESTS.txt', 'r', encoding='utf8') as f:
         for question in f:
             print("\n============================")

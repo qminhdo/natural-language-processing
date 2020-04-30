@@ -1,3 +1,4 @@
 *.ini
 .idea/
 **/desktop.ini
+QA/data
