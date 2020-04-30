@@ -14,8 +14,6 @@ class AnswerProcessor:
         * Binary (yes/no verification)
         * Location  $ body part related
         * Time # frequency of taking drug, occurence of disease, how long it last
-
-    http://sujitpal.blogspot.com/2014/12/semantic-similarity-for-short-sentences.html
     """
 
     def __init__(self, q_classifier, passages_scores):
@@ -39,17 +37,36 @@ class AnswerProcessor:
             ans = ps_[0].capitalize()
             ans = re.sub(r'\.', ' ', ans)
             ans = re.sub(r',$', '', ans)
-            answer += ans + '.\n\n'
+            ans += '.\n\n'
 
+            # if the answer contain a List
+            # format the answer such that for there will be a list after ":"
+            r = re.compile(r':\s?(?P<section>.*)\s?\.', re.IGNORECASE)
+            match = r.search(ans, re.IGNORECASE)
+            section = ""
 
-        # format the answer such that for there will be a list after ":"
+            if match:
+                section = match.groupdict().get('section').strip()
 
+                # check if section contain child list
+                r_ = re.compile(r'(;)', re.IGNORECASE)
+                match_ = r_.search(ans, re.IGNORECASE)
+
+                section = self.build_list(section, ';') if match_ else self.build_list(section, ',')
+                section = ":\n\t- " + section
+                ans = re.sub(r, section, ans)
+
+            answer += ans
 
         return answer
 
-    def normalize_passages(self):
-        pass
-
+    def build_list(self, text, deliminator):
+        sents_list = text.split(deliminator)
+        sents_list = set(sents_list)
+        sents_list = list(sents_list)
+        sents_list = [sent.strip().capitalize() for sent in sents_list if sent.strip() != ""]
+        text = "\n\t- ".join(sents_list)
+        return text
 
 if __name__ == "__main__":
     pass
