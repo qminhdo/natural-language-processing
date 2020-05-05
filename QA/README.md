@@ -1,5 +1,8 @@
 ## NEIU NLP Question Answering Project - Disease and Medication
 
+Actual running application at
+http://www.qminhdo.com/qa
+
 #### Requirements
 Python 3.7
 ```
