@@ -94,7 +94,7 @@ prefix = "https://www.mayoclinic.org"
 
 index = 0
 # loop over all links in file
-with open("./disease_links.txt", 'r', encoding='utf8') as f:
+with open("./disease_links.txt", 'r', encoding='utf-8') as f:
     for line in f:
         # line = "https://www.mayoclinic.org/diseases-conditions/shellfish-allergy/symptoms-causes/syc-20377503"
         contents = ""
@@ -120,7 +120,7 @@ with open("./disease_links.txt", 'r', encoding='utf8') as f:
             if match:
                 filename = match.groupdict().get('name')
 
-            with (open("../data/assorted/{}-disease-{}.txt".format(index, filename), 'w', encoding='utf8')) as f:
+            with (open("../data/assorted/{}-disease-{}.txt".format(index, filename), 'w', encoding='utf-8')) as f:
                 f.write(contents)
 
             index += 1

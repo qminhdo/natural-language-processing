@@ -34,7 +34,7 @@ prefix = "https://www.mayoclinic.org"
 
 index = 0
 # loop over all links in file
-with open("./drugs_links.txt", 'r', encoding='utf8') as f:
+with open("./drugs_links.txt", 'r', encoding='utf-8') as f:
     # line = "https://www.drugs.com/mtm/anastrozole.html"
     for line in f:
         contents = ""
@@ -51,7 +51,7 @@ with open("./drugs_links.txt", 'r', encoding='utf8') as f:
             match = r.search(link)
             if match:
                 filename = match.groupdict().get('name')
-                with (open("../data/assorted/{}-drugs-{}.txt".format(index,filename), 'w', encoding='utf8')) as f:
+                with (open("../data/assorted/{}-drugs-{}.txt".format(index,filename), 'w', encoding='utf-8')) as f:
                     f.write(contents)
 
             index += 1
